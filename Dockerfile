@@ -1,4 +1,4 @@
-FROM shaunmulligan/arch-armv6h-resin
+FROM mockersf/rpi2-archlinuxarm
 
 MAINTAINER Andrew Monks <a@monks.co>
 
