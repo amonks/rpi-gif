@@ -50,6 +50,7 @@ camera.on('started', function (err, timestamp) {
 camera.on('exit', function (timestamp) {
   // we can now do stuff with the captured image, which is stored in /data
   console.log('video child process has exited at ' + timestamp)
+  console.log('now gonna start video conversion process')
 
   exec('avconv -i /data/vid.264 -vcodec copy /data/vid.mp4',
     function (error, stdout, stderr) {
@@ -58,6 +59,7 @@ camera.on('exit', function (timestamp) {
       if (error !== null) {
         console.log('exec error: ' + error)
       }
+      console.log('conversion child process has exited. Now gonna upload to twitter')
       upload_to_twitter('/data/vid.mp4', 'cool, huh?')
     }
   )
