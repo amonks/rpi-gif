@@ -3,7 +3,7 @@
 var RaspiCam = require('raspicam')
 var express = require('express')
 
-var app = express().createServer()
+var app = express.createServer()
 var io = require('socket.io')(app)
 
 var latest = 0
