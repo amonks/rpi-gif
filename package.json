@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "main": "app.js",
   "dependencies": {
+    "aws-sdk": "^2.2.22",
     "express": "^4.13.3",
+    "node-twitter": "^0.5.3",
     "raspicam": "~0.2.13"
   },
   "devDependencies": {},
