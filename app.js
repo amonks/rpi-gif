@@ -56,7 +56,9 @@ camera.on('exit', function (timestamp) {
 })
 
 // camera.start()
-setInterval(camera.start, 10000)
+setInterval(function () {
+  camera.start()
+}, 10000)
 
 // var camera = new RaspiCam(video_opts())
 
