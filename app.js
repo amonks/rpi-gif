@@ -2,18 +2,31 @@
 
 var RaspiCam = require('raspicam')
 var express = require('express')
-var app = express()
+
+var app = express().createServer()
+var io = require('socket.io')(app)
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' })
+  socket.on('my other event', function (data) {
+    console.log(data)
+  })
+})
 
 app.use('/videos', express.static('/data'))
 
-app.get('/capture', function (req, res) {
-  camera.start()
-  console.log('capturing')
-  res.send('capturing')
-})
+// app.get('/capture', function (req, res) {
+//   camera.start()
+//   console.log('capturing')
+//   res.send('capturing')
+// })
 
 app.get('/latest', function (req, res) {
   res.redirect('/videos/latest.h264')
+})
+
+app.get('/list', function (req, res) {
+  res.send('hello')
 })
 
 var video_opts = function () {
@@ -65,3 +78,4 @@ var server = app.listen(3000, function () {
   console.log('rpi-gif listening at http://%s:%s', host, port)
   console.log('visit /capture or /latest')
 })
+
