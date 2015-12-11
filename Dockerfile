@@ -4,7 +4,8 @@ FROM resin/raspberrypi2-node
 
 MAINTAINER Andrew Monks <a@monks.co>
 
-ADD bootstrap.sh /app/bootstrap.sh
+ONBUILD COPY . /app
+ONBUILD RUN npm install --unsafe-perm
 
-CMD /app/bootstrap.sh
+CMD ["./bootstrap.sh"]
 
