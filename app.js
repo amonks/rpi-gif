@@ -109,7 +109,7 @@ var upload_to_twitter = function (file, status) {
             } else {
               console.log('Successfully uploaded data to myBucket/myKey')
               var req_url = process.env.PROXY_URL + '/incoming/' + tweet.id
-              if (process.env.FLUSH === 'true') {
+              if (process.env.FLUSH === 'TRUE') {
                 req_url = process.env.PROXY_URL + '/flush'
               }
               console.log('gonna make a request to: ' + req_url)
