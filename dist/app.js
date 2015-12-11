@@ -62,6 +62,7 @@ camera.on('exit', function (timestamp) {
 });
 
 var upload_to_twitter = function upload_to_twitter(file, status) {
+  console.log('just called upload_to_twitter');
   twitterRestClient.statusesUpdateWithMedia({
     'media[]': '' + file,
     status: status
@@ -101,5 +102,7 @@ var upload_to_twitter = function upload_to_twitter(file, status) {
   });
 };
 
-setInterval(camera.start, process.env.FREQUENCY || 10000);
-// camera.start
+console.log('about to start camera');
+camera.start;
+console.log('about to start camera interval');
+setInterval(camera.start, 10000);
