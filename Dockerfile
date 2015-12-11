@@ -1,6 +1,6 @@
 FROM resin/raspberrypi2-node:0.10.22
 
-RUN apt-get install libav-tools
+# RUN apt-get install libav-tools
 
 RUN mkdir -p /usr/src/app && ln -s /usr/src/app /app
 WORKDIR /usr/src/app
