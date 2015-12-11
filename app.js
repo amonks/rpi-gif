@@ -55,7 +55,7 @@ camera.on('exit', function (timestamp) {
   exec('avconv -y -i /data/vid.264 -vcodec copy /data/vid.gif',
     function (error, stdout, stderr) {
       if (error) {
-        console.log('conversion process failed with error code: ' + error.code)
+        console.log('conversion process failed with error: ' + error)
         return
       }
       console.log('stdout: ' + stdout)
