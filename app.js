@@ -66,7 +66,7 @@ camera.on('exit', function (timestamp) {
       console.log('stdout: ' + stdout)
       console.log('stderr: ' + stderr)
       console.log('conversion child process has exited. Now gonna upload to twitter')
-      upload_to_twitter('/data/vid.gif', 'cool, huh?')
+      upload_to_twitter('/data/vid.gif', 'THIS TIME ITS REAL')
     }
   )
 })
