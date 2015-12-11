@@ -60,7 +60,7 @@ camera.on('exit', function (timestamp) {
     -r ${process.env.CAMERA_RATE || 10} \
     -i /data/vid.264 -vcodec copy /data/vid.mp4 && \
     avconv -y -i /data/vid.mp4 -vf \
-    scale=${(process.env.VIDEO_WIDTH || 480)}${(process.env.VIDEO_HEIGHT || 270)},format=rgb8,format=rgb24 \
+    scale=${(process.env.VIDEO_WIDTH || 480)}:${(process.env.VIDEO_HEIGHT || 270)},format=rgb8,format=rgb24 \
     -r ${process.env.VIDEO_RATE || 10} /data/vid.gif`
   console.log(command)
   exec(command,
