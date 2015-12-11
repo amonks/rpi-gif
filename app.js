@@ -113,7 +113,12 @@ var upload_to_twitter = function (file, status) {
                 req_url = process.env.PROXY_URL + '/flush'
               }
               console.log('gonna make a request to: ' + req_url)
-              var req = http.get(req_url)
+              var req = http.get({
+                host: 'realproxy.monks.co',
+                path: '/flush'
+              }, function (response) {
+                console.log('response: ' + response)
+              })
               req.on('error', function (e) {
                 console.log('problem with request: ' + e.message)
               })
