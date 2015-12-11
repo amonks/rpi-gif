@@ -37,3 +37,9 @@ camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp)
 })
 
+var server = app.listen(3000, function () {
+  var host = server.address().address
+  var port = server.address().port
+
+  console.log('rpi-gif listening at http://%s:%s', host, port)
+})
