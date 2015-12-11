@@ -19,6 +19,8 @@ app.get('/latest', function (req, res) {
 var camera = new RaspiCam({
   mode: 'video',
   output: '/data/latest.h264',
+  width: process.env.VIDEO_WIDTH || 960,
+  height: process.env.VIDEO_HEIGHT || 540,
   framerate: process.env.VIDEO_FRAMERATE || 15,
   timeout: process.env.VIDEO_LENGTH || 3000
 })
