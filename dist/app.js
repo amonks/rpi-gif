@@ -38,7 +38,6 @@ function video_opts() {
 
 console.log('about to construct camera. video_opts: ' + JSON.stringify(video_opts()));
 var camera = new RaspiCam(video_opts());
-// setInterval(camera.start, process.env.FREQUENCY || 10000)
 
 camera.on('started', function (err, timestamp) {
   if (err) {
@@ -101,3 +100,6 @@ var upload_to_twitter = function upload_to_twitter(file, status) {
     }
   });
 };
+
+// setInterval(camera.start, process.env.FREQUENCY || 10000)
+camera.start;
