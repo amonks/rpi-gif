@@ -69,15 +69,15 @@ camera.on('exit', function (timestamp) {
 });
 
 var upload_to_twitter = function upload_to_twitter(file, status) {
-  console.log('just called upload_to_twitter');
+  console.log('just called upload_to_twitter. file: ' + file + ' status: ' + status);
   twitterRestClient.statusesUpdateWithMedia({
     'media[]': '' + file,
     status: status
   }, function (error, tweet) {
     if (error) {
-      console.log(error);
+      console.log('error uploading to twitter: ' + error);
     } else {
-      console.log(tweet.id);
+      console.log('successfully uploaded to twitter: ' + tweet.id);
       var s3bucket = new aws.S3({
         params: {
           Bucket: process.env.AWS_S3_BUCKET
