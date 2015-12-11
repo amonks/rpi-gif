@@ -1,7 +1,5 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 // rpi-gif
 
 var RaspiCam = require('raspicam');
@@ -33,12 +31,12 @@ function video_opts() {
     framerate: process.env.VIDEO_FRAMERATE || 15,
     timeout: process.env.VIDEO_LENGTH || 3000
   };
-  _extends(opts, flips);
-  _extends(opts, defaults);
-  return opts;
+  // Object.assign(opts, flips)
+  // Object.assign(opts, defaults)
+  return defaults;
 }
 
-console.log('about to construct camera. video_opts: ' + video_opts());
+console.log('about to construct camera. video_opts: ' + JSON.stringify(video_opts()));
 var camera = new RaspiCam(video_opts());
 setInterval(camera.start, process.env.FREQUENCY || 10000);
 
