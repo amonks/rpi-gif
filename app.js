@@ -37,6 +37,7 @@ function video_opts (opts = {}) {
   return opts
 }
 
+console.log('about to construct camera. video_opts: ' + video_opts())
 var camera = new RaspiCam(video_opts())
 setInterval(camera.start, process.env.FREQUENCY || 10000)
 
