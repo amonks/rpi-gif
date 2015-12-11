@@ -1,6 +1,6 @@
 // rpi-gif
 
-var RaspiCam = require('raspicam')
+// var RaspiCam = require('raspicam')
 
 var aws = require('aws-sdk')
 var express = require('express')
@@ -33,43 +33,43 @@ function video_opts (opts = {}) {
     output: '../../../data/' + 'vid' + '.264',
     width: process.env.VIDEO_WIDTH || 480,
     height: process.env.VIDEO_HEIGHT || 270,
-    framerate: process.env.VIDEO_FRAMERATE || 15,
-    timeout: process.env.VIDEO_LENGTH || 3000
+    framerate: process.env.VIDEO_FRAMERATE || 5,
+    timeout: process.env.VIDEO_LENGTH || 5000
   }
   // Object.assign(opts, flips)
   // Object.assign(opts, defaults)
   return defaults
 }
 
-var camera = new RaspiCam(video_opts())
+ var camera = new RaspiCam(video_opts())
 
-camera.on('started', function (err, timestamp) {
-  if (err) {
-    console.log('error starting camera: ' + err)
-  } else {
-    console.log('video started at ' + timestamp)
-  }
-})
+ camera.on('started', function (err, timestamp) {
+   if (err) {
+     console.log('error starting camera: ' + err)
+   } else {
+     console.log('video started at ' + timestamp)
+   }
+ })
 
-camera.on('exit', function (timestamp) {
-  // we can now do stuff with the captured image, which is stored in /data
-  console.log('video child process has exited at ' + timestamp)
-  console.log('now gonna start video conversion process')
+ camera.on('exit', function (timestamp) {
+   // we can now do stuff with the captured image, which is stored in /data
+   console.log('video child process has exited at ' + timestamp)
+   console.log('now gonna start video conversion process')
 
-  var command = 'avconv -y -r 30 -i /data/vid.264 -vcodec copy /data/vid.mp4 && avconv -y -i /data/vid.mp4 -vf scale=' + (process.env.VIDEO_WIDTH || 480) + ':' + (process.env.VIDEO_HEIGHT || 270) + ',format=rgb8,format=rgb24 -r 10 /data/vid.gif'
-  console.log(command)
-  exec(command,
-    function (error, stdout, stderr) {
-      if (error) {
-        console.log('conversion process failed with error: ' + error)
-      }
-      console.log('stdout: ' + stdout)
-      console.log('stderr: ' + stderr)
-      console.log('conversion child process has exited. Now gonna upload to twitter')
-      upload_to_twitter('/data/vid.gif', 'cool, huh?')
-    }
-  )
-})
+   var command = 'avconv -y -r 10 -i /data/vid.264 -vcodec copy /data/vid.mp4 && avconv -y -i /data/vid.mp4 -vf scale=' + (process.env.VIDEO_WIDTH || 480) + ':' + (process.env.VIDEO_HEIGHT || 270) + ',format=rgb8,format=rgb24 -r 10 /data/vid.gif'
+   console.log(command)
+   exec(command,
+     function (error, stdout, stderr) {
+       if (error) {
+         console.log('conversion process failed with error: ' + error)
+       }
+       console.log('stdout: ' + stdout)
+       console.log('stderr: ' + stderr)
+       console.log('conversion child process has exited. Now gonna upload to twitter')
+       upload_to_twitter('/data/vid.gif', 'cool, huh?')
+     }
+   )
+ })
 
 var upload_to_twitter = function (file, status) {
   console.log('just called upload_to_twitter. file: ' + file + ' status: ' + status)
@@ -78,7 +78,7 @@ var upload_to_twitter = function (file, status) {
     status: status
   }, function (error, tweet) {
     if (error) {
-      console.log('error uploading to twitter: ' + error)
+      console.log('error uploading to twitter. code: ' + error.code + ' message: ' + error.message)
     } else {
       console.log('successfully uploaded to twitter: ' + tweet.id)
       var s3bucket = new aws.S3({
@@ -122,3 +122,4 @@ if (process.env.RECORD && process.env.RECORD !== 'FALSE') {
 var server = app.listen(3000, function () {
   console.log('listening on 3000')
 })
+

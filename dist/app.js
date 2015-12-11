@@ -2,7 +2,7 @@
 
 // rpi-gif
 
-var RaspiCam = require('raspicam');
+// var RaspiCam = require('raspicam')
 
 var aws = require('aws-sdk');
 var express = require('express');
@@ -32,8 +32,8 @@ function video_opts() {
     output: '../../../data/' + 'vid' + '.264',
     width: process.env.VIDEO_WIDTH || 480,
     height: process.env.VIDEO_HEIGHT || 270,
-    framerate: process.env.VIDEO_FRAMERATE || 15,
-    timeout: process.env.VIDEO_LENGTH || 3000
+    framerate: process.env.VIDEO_FRAMERATE || 5,
+    timeout: process.env.VIDEO_LENGTH || 5000
   };
   // Object.assign(opts, flips)
   // Object.assign(opts, defaults)
@@ -55,7 +55,7 @@ camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp);
   console.log('now gonna start video conversion process');
 
-  var command = 'avconv -y -r 30 -i /data/vid.264 -vcodec copy /data/vid.mp4 && avconv -y -i /data/vid.mp4 -vf scale=' + (process.env.VIDEO_WIDTH || 480) + ':' + (process.env.VIDEO_HEIGHT || 270) + ',format=rgb8,format=rgb24 -r 10 /data/vid.gif';
+  var command = 'avconv -y -r 10 -i /data/vid.264 -vcodec copy /data/vid.mp4 && avconv -y -i /data/vid.mp4 -vf scale=' + (process.env.VIDEO_WIDTH || 480) + ':' + (process.env.VIDEO_HEIGHT || 270) + ',format=rgb8,format=rgb24 -r 10 /data/vid.gif';
   console.log(command);
   exec(command, function (error, stdout, stderr) {
     if (error) {
@@ -75,7 +75,7 @@ var upload_to_twitter = function upload_to_twitter(file, status) {
     status: status
   }, function (error, tweet) {
     if (error) {
-      console.log('error uploading to twitter: ' + error);
+      console.log('error uploading to twitter. code: ' + error.code + ' message: ' + error.message);
     } else {
       console.log('successfully uploaded to twitter: ' + tweet.id);
       var s3bucket = new aws.S3({
