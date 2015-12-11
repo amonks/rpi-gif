@@ -69,7 +69,7 @@ camera.on('exit', function (timestamp) {
   // we can now do stuff with the captured image, which is stored in /data
   console.log('video child process has exited at ' + timestamp);
 
-  exec('avconf -i /data/vid.264 -vcodef copy /data/vid.mp4', function (error, stdout, stderr) {
+  exec('avconv -i /data/vid.264 -vcodef copy /data/vid.mp4', function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);
     console.log('stderr: ' + stderr);
     upload_to_twitter('/data/vid.mp4', 'cool, huh?');
@@ -123,4 +123,4 @@ var upload_to_twitter = function upload_to_twitter(file, status) {
 console.log('about to start camera interval');
 setInterval(function () {
   camera.start();
-}, 10000);
+}, process.env.VIDEO_PERIOD || 10000);
