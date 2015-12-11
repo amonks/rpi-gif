@@ -13,12 +13,12 @@ app.get('/capture', function (req, res) {
 })
 
 app.get('/latest', function (req, res) {
-  res.redirect('/videos/video.h264')
+  res.redirect('/videos/latest.h264')
 })
 
 var camera = new RaspiCam({
   mode: 'video',
-  output: '/data/video.h264',
+  output: '/data/latest.h264',
   framerate: process.env.VIDEO_FRAMERATE || 15,
   timeout: process.env.VIDEO_LENGTH || 3000
 })
@@ -49,4 +49,5 @@ var server = app.listen(3000, function () {
   var port = server.address().port
 
   console.log('rpi-gif listening at http://%s:%s', host, port)
+  console.log('visit /capture or /latest')
 })
