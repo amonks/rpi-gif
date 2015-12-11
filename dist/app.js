@@ -1,3 +1,5 @@
+'use strict';
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 // rpi-gif
@@ -13,7 +15,9 @@ var twitterRestClient = new Twitter.RestClient(process.env.CONSUMER_KEY, process
 
 var exec = require('child_process').exec;
 
-function video_opts(opts = {}) {
+function video_opts() {
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
   var flips = {};
   if (process.env.HF === 'TRUE') {
     flips.hf = true;
@@ -60,7 +64,7 @@ camera.on('exit', function (timestamp) {
   });
 });
 
-var upload_to_twitter = function (file, status) {
+var upload_to_twitter = function upload_to_twitter(file, status) {
   twitterRestClient.statusesUpdateWithMedia({
     'media[]': '' + file,
     status: status
