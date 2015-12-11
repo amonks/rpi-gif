@@ -1,3 +1,5 @@
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 // rpi-gif
 
 var RaspiCam = require('raspicam');
@@ -27,8 +29,8 @@ function video_opts(opts) {
     framerate: process.env.VIDEO_FRAMERATE || 15,
     timeout: process.env.VIDEO_LENGTH || 3000
   };
-  Object.assign(opts, flips);
-  Object.assign(opts, defaults);
+  _extends(opts, flips);
+  _extends(opts, defaults);
   return opts;
 }
 
