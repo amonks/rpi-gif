@@ -16,5 +16,5 @@
   "scripts": {
     "preinstall": "bash deps.sh",
     "start": "modprobe bcm2835-v4l2 && node dist/app.js"
-  },
+  }
 }
