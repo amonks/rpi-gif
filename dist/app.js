@@ -69,7 +69,7 @@ camera.on('exit', function (timestamp) {
   // we can now do stuff with the captured image, which is stored in /data
   console.log('video child process has exited at ' + timestamp);
 
-  exec('avconv -i /data/vid.264 -vcodef copy /data/vid.mp4', function (error, stdout, stderr) {
+  exec('avconv -i /data/vid.264 -vcodec copy /data/vid.mp4', function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);
     console.log('stderr: ' + stderr);
     upload_to_twitter('/data/vid.mp4', 'cool, huh?');
