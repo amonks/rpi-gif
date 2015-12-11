@@ -2,7 +2,7 @@
 
 // rpi-gif
 
-// var RaspiCam = require('raspicam')
+var RaspiCam = require('raspicam');
 
 var aws = require('aws-sdk');
 var express = require('express');
