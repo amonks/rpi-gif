@@ -43,25 +43,26 @@ function video_opts (opts = {}) {
 
 var camera = new RaspiCam(video_opts())
 
-camera.on('started', function( err, timestamp ) {
-  console.log('video started at ' + timestamp )
+camera.on('started', function (err, timestamp) {
+  console.log('video started at ' + timestamp)
 })
 
 camera.on('read', function (err, timestamp, filename) {
   console.log('video captured with filename: ' + filename + ' at ' + timestamp)
 })
 
-camera.on('exit', function( timestamp ) {
+camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp)
 })
 
-camera.start()
+// camera.start()
+setInterval(camera.start, 10000)
 
 // var camera = new RaspiCam(video_opts())
 
 // camera.on('started', function (err, timestamp) {
 //   if (err) {
-//     console.log(err)
+//     console.log('error starting camera: ' + err)
 //   } else {
 //     console.log('video started at ' + timestamp)
 //   }
