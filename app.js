@@ -16,14 +16,26 @@ app.get('/latest', function (req, res) {
   res.redirect('/videos/latest.h264')
 })
 
-var camera = new RaspiCam({
-  mode: 'video',
-  output: '/data/latest.h264',
-  width: process.env.VIDEO_WIDTH || 960,
-  height: process.env.VIDEO_HEIGHT || 540,
-  framerate: process.env.VIDEO_FRAMERATE || 15,
-  timeout: process.env.VIDEO_LENGTH || 3000
-})
+var video_opts = function () {
+  let flips = {}
+  if (process.env.HF === 'TRUE') {
+    flips.hf = true
+  }
+  if (process.env.VF === 'TRUE') {
+    flips.vf = true
+  }
+  let defaults = {
+    mode: 'video',
+    output: '/data/latest.h264',
+    width: process.env.VIDEO_WIDTH || 960,
+    height: process.env.VIDEO_HEIGHT || 540,
+    framerate: process.env.VIDEO_FRAMERATE || 15,
+    timeout: process.env.VIDEO_LENGTH || 3000
+  }
+  return Object.assign(defaults, flips)
+}
+
+var camera = new RaspiCam(video_opts())
 
 camera.on('started', function (err, timestamp) {
   if (err) {
