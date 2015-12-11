@@ -8,9 +8,12 @@
     "node-twitter": "^0.5.3",
     "raspicam": "~0.2.13"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1"
+  },
   "scripts": {
     "preinstall": "bash deps.sh",
-    "start": "modprobe bcm2835-v4l2 && node app.js"
+    "start": "modprobe bcm2835-v4l2 && node dist/app.js"
   }
 }
