@@ -28,13 +28,13 @@ camera.on('read', function (err, timestamp, filename) {
   if (err) {
     console.log(err)
   } else {
-    console.log('video captured with filename: ' + filename)
-    // we can now do stuff with the captured image, which is stored in /data
+    console.log('video capturing with filename: ' + filename)
   }
 })
 
 camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp)
+  // we can now do stuff with the captured image, which is stored in /data
 })
 
 var server = app.listen(3000, function () {
