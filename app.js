@@ -1,52 +1,88 @@
 // rpi-gif
 
 var RaspiCam = require('raspicam')
-var express = require('express')
 
-var app = express()
-var server = require('http').Server(app)
-var io = require('socket.io')(server)
+var camera = new RaspiCam(video_opts({name: 'vid'}))
+setInterval(camera.start, process.env.FREQUENCY || 1000)
 
-var latest = 0
+var aws = require('aws-sdk')
+var Twitter = require('node-twitter')
+var http = require('http')
+var fs = require('fs')
 
-var next_video = function () {
-  return latest + 1
-}
+var twitterRestClient = new Twitter.RestClient(
+  process.env.CONSUMER_KEY,
+  process.env.CONSUMER_SECRET,
+  process.env.TOKEN_KEY,
+  process.env.TOKEN_SECRET
+)
 
-io.on('connection', function (socket) {
-  // socket.emit('news', { hello: 'world' })
-  // socket.on('my other event', function (data) {
-  //   console.log(data)
-  // })
+var exec = require('child_process').exec
 
-  var i = next_video()
-  var camera = new RaspiCam(video_opts({name: i}))
-  setInterval(camera.start, process.env.FREQUENCY || 1000)
+camera.on('started', function (err, timestamp) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log('video started at ' + timestamp)
+  }
+})
 
-  camera.on('started', function (err, timestamp) {
-    if (err) {
-      console.log(err)
+camera.on('exit', function (timestamp) {
+  // we can now do stuff with the captured image, which is stored in /data
+  console.log('video child process has exited at ' + timestamp)
+
+  exec('avconf -i /data/vid.264 -vcodef copy /data/vid.mp4',
+    function (error, stdout, stderr) {
+      console.log('stdout: ' + stdout)
+      console.log('stderr: ' + stderr)
+      upload_to_twitter('/data/vid.mp4', 'cool, huh?')
+      if (error !== null) {
+        console.log('exec error: ' + error)
+      }
+
+    }
+  )
+})
+
+var upload_to_twitter = function (file, status) {
+  twitterRestClient.statusesUpdateWithMedia({
+    'media[]': '' + file,
+    status: status
+  }, function (error, tweet) {
+    if (error) {
+      console.log(error)
     } else {
-      console.log('video started at ' + timestamp)
+      console.log(tweet.id)
+      var s3bucket = new aws.S3({
+        params: {
+          Bucket: process.env.AWS_S3_BUCKET
+        }
+      })
+      fs.readFile(file, function (err, fileContents) {
+        if (err) {
+          console.log('error reading file', file, err)
+        } else {
+          console.log('BUCKET', process.env.AWS_S3_BUCKET)
+          var params = {
+            'Bucket': process.env.AWS_S3_BUCKET,
+            'Key': tweet.id_str + '.gif',
+            'Body': fileContents,
+            'ContentType': 'image/gif',
+            'ACL': 'public-read'
+          }
+          s3bucket.upload(params, function (err, data) {
+            if (err) {
+              console.log('Error uploading data:', err)
+            } else {
+              console.log('Successfully uploaded data to myBucket/myKey')
+              http.get(process.env.PROXY_URL + '/incoming/' + tweet.id)
+            }
+          })
+        }
+      })
     }
   })
-
-  camera.on('exit', function (timestamp) {
-    // we can now do stuff with the captured image, which is stored in /data
-    console.log('video child process has exited at ' + timestamp)
-    socket.emit('captured', { url: '/videos/' + i + '.h264' })
-  })
-})
-
-app.use('/videos', express.static('/data'))
-
-app.get('/latest', function (req, res) {
-  res.redirect('/videos/latest.h264')
-})
-
-app.get('/list', function (req, res) {
-  res.send('hello')
-})
+}
 
 var video_opts = function (opts) {
   var flips = {}
@@ -58,7 +94,7 @@ var video_opts = function (opts) {
   }
   var defaults = {
     mode: 'video',
-    output: '/data/' + opts.name + '.h264',
+    output: '/data/' + opts.name + '.264',
     width: process.env.VIDEO_WIDTH || 960,
     height: process.env.VIDEO_HEIGHT || 540,
     framerate: process.env.VIDEO_FRAMERATE || 15,
@@ -68,12 +104,4 @@ var video_opts = function (opts) {
   Object.assign(opts, defaults)
   return opts
 }
-
-server.listen(3000, function () {
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log('rpi-gif listening at http://%s:%s', host, port)
-  console.log('visit /capture or /latest')
-})
 
