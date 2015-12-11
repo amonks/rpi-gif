@@ -48,14 +48,14 @@ app.get('/list', function (req, res) {
 })
 
 var video_opts = function (opts) {
-  let flips = {}
+  var flips = {}
   if (process.env.HF === 'TRUE') {
     flips.hf = true
   }
   if (process.env.VF === 'TRUE') {
     flips.vf = true
   }
-  let defaults = {
+  var defaults = {
     mode: 'video',
     output: '/data/' + opts.name + '.h264',
     width: process.env.VIDEO_WIDTH || 960,
