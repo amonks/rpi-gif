@@ -56,7 +56,7 @@ camera.on('exit', function (timestamp) {
     if (error !== null) {
       console.log('exec error: ' + error);
     }
-    // upload_to_twitter('/data/vid.mp4', 'cool, huh?')
+    upload_to_twitter('/data/vid.mp4', 'cool, huh?');
   });
 });
 
