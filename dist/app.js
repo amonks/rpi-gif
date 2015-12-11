@@ -51,7 +51,7 @@ camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp);
   console.log('now gonna start video conversion process');
 
-  exec('avconv -yi /data/vid.264 -vcodec copy /data/vid.mp4', function (error, stdout, stderr) {
+  exec('avconv -y -i /data/vid.264 -vcodec copy /data/vid.mp4', function (error, stdout, stderr) {
     if (error) {
       console.log('conversion process failed with error code: ' + error.code);
       return;
