@@ -103,7 +103,10 @@ var upload_to_twitter = function (file, status) {
               console.log('Error uploading data:', err)
             } else {
               console.log('Successfully uploaded data to myBucket/myKey')
-              http.get(process.env.PROXY_URL + '/incoming/' + tweet.id)
+              var req = http.get(process.env.PROXY_URL + '/incoming/' + tweet.id)
+              req.on('error', function (e) {
+                console.log('problem with request: ' + e.message)
+              })
             }
           })
         }
@@ -119,7 +122,7 @@ if (process.env.RECORD && process.env.RECORD !== 'FALSE') {
   }, process.env.VIDEO_PERIOD || 10000)
 }
 
-var server = app.listen(3000, function () {
+app.listen(3000, function () {
   console.log('listening on 3000')
 })
 
