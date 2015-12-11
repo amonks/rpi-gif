@@ -16,7 +16,7 @@ var twitterRestClient = new Twitter.RestClient(
 
 var exec = require('child_process').exec
 
-function video_opts (opts) {
+function video_opts (opts = {}) {
   var flips = {}
   if (process.env.HF === 'TRUE') {
     flips.hf = true
@@ -26,7 +26,7 @@ function video_opts (opts) {
   }
   var defaults = {
     mode: 'video',
-    output: '/data/' + opts.name + '.264',
+    output: '/data/' + 'vid' + '.264',
     width: process.env.VIDEO_WIDTH || 960,
     height: process.env.VIDEO_HEIGHT || 540,
     framerate: process.env.VIDEO_FRAMERATE || 15,
@@ -37,8 +37,8 @@ function video_opts (opts) {
   return opts
 }
 
-var camera = new RaspiCam(video_opts({name: 'vid'}))
-setInterval(camera.start, process.env.FREQUENCY || 1000)
+var camera = new RaspiCam(video_opts())
+setInterval(camera.start, process.env.FREQUENCY || 10000)
 
 camera.on('started', function (err, timestamp) {
   if (err) {
