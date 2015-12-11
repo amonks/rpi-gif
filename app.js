@@ -52,7 +52,7 @@ camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp)
   console.log('now gonna start video conversion process')
 
-  exec('avconv -y -i /data/vid.264 -vcodec copy /data/vid.mp4',
+  exec('avconv -y -i /data/vid.264 -vcodec copy /data/vid.gif',
     function (error, stdout, stderr) {
       if (error) {
         console.log('conversion process failed with error code: ' + error.code)
@@ -61,7 +61,7 @@ camera.on('exit', function (timestamp) {
       console.log('stdout: ' + stdout)
       console.log('stderr: ' + stderr)
       console.log('conversion child process has exited. Now gonna upload to twitter')
-      upload_to_twitter('/data/vid.mp4', 'cool, huh?')
+      upload_to_twitter('/data/vid.gif', 'cool, huh?')
     }
   )
 })
