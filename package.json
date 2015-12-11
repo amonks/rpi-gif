@@ -1,0 +1,13 @@
+{
+  "name": "resin-picamera",
+  "version": "0.0.1",
+  "main": "app.js",
+  "dependencies": {
+    "raspicam": "~0.2.13"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "preinstall": "bash deps.sh",
+    "start": "modprobe bcm2835-v4l2 && node app.js"
+  }
+}
