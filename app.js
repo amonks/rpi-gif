@@ -41,12 +41,7 @@ function video_opts (opts = {}) {
 
 
 
-var camera = new RaspiCam({
-  mode: 'video',
-  output: './video/video.h264',
-  framerate: 15,
-  timeout: 5000 // take a 5 second video
-})
+var camera = new RaspiCam(video_opts())
 
 camera.on('started', function( err, timestamp ) {
   console.log('video started at ' + timestamp )
