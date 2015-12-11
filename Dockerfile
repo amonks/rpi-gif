@@ -1,7 +1,6 @@
 FROM resin/raspberrypi2-node:0.10.22
 
-RUN apt-get install graphicsmagick \
-  && apt-get install ffmpeg
+RUN apt-get install avconv
 
 RUN mkdir -p /usr/src/app && ln -s /usr/src/app /app
 WORKDIR /usr/src/app
