@@ -2,9 +2,6 @@
 
 var RaspiCam = require('raspicam')
 
-var camera = new RaspiCam(video_opts({name: 'vid'}))
-setInterval(camera.start, process.env.FREQUENCY || 1000)
-
 var aws = require('aws-sdk')
 var Twitter = require('node-twitter')
 var http = require('http')
@@ -18,6 +15,30 @@ var twitterRestClient = new Twitter.RestClient(
 )
 
 var exec = require('child_process').exec
+
+function video_opts (opts) {
+  var flips = {}
+  if (process.env.HF === 'TRUE') {
+    flips.hf = true
+  }
+  if (process.env.VF === 'TRUE') {
+    flips.vf = true
+  }
+  var defaults = {
+    mode: 'video',
+    output: '/data/' + opts.name + '.264',
+    width: process.env.VIDEO_WIDTH || 960,
+    height: process.env.VIDEO_HEIGHT || 540,
+    framerate: process.env.VIDEO_FRAMERATE || 15,
+    timeout: process.env.VIDEO_LENGTH || 3000
+  }
+  Object.assign(opts, flips)
+  Object.assign(opts, defaults)
+  return opts
+}
+
+var camera = new RaspiCam(video_opts({name: 'vid'}))
+setInterval(camera.start, process.env.FREQUENCY || 1000)
 
 camera.on('started', function (err, timestamp) {
   if (err) {
@@ -39,7 +60,6 @@ camera.on('exit', function (timestamp) {
       if (error !== null) {
         console.log('exec error: ' + error)
       }
-
     }
   )
 })
@@ -82,26 +102,5 @@ var upload_to_twitter = function (file, status) {
       })
     }
   })
-}
-
-var video_opts = function (opts) {
-  var flips = {}
-  if (process.env.HF === 'TRUE') {
-    flips.hf = true
-  }
-  if (process.env.VF === 'TRUE') {
-    flips.vf = true
-  }
-  var defaults = {
-    mode: 'video',
-    output: '/data/' + opts.name + '.264',
-    width: process.env.VIDEO_WIDTH || 960,
-    height: process.env.VIDEO_HEIGHT || 540,
-    framerate: process.env.VIDEO_FRAMERATE || 15,
-    timeout: process.env.VIDEO_LENGTH || 3000
-  }
-  Object.assign(opts, flips)
-  Object.assign(opts, defaults)
-  return opts
 }
 
