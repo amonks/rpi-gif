@@ -27,8 +27,8 @@ function video_opts (opts = {}) {
   var defaults = {
     mode: 'video',
     output: '../../../data/' + 'vid' + '.264',
-    width: process.env.VIDEO_WIDTH || 960,
-    height: process.env.VIDEO_HEIGHT || 540,
+    width: process.env.VIDEO_WIDTH || 480,
+    height: process.env.VIDEO_HEIGHT || 270,
     framerate: process.env.VIDEO_FRAMERATE || 15,
     timeout: process.env.VIDEO_LENGTH || 3000
   }
@@ -52,7 +52,7 @@ camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp)
   console.log('now gonna start video conversion process')
 
-  exec('avconv -y -i /data/vid.264 -vcodec copy /data/vid.gif',
+  exec('avconv -y x -i /data/vid.264 -s qvga -vf format=rgb8,format=rgb24 -r 10 /data/vid.gif',
     function (error, stdout, stderr) {
       if (error) {
         console.log('conversion process failed with error: ' + error)
