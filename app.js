@@ -108,7 +108,9 @@ var upload_to_twitter = function (file, status) {
               console.log('Error uploading data:', err)
             } else {
               console.log('Successfully uploaded data to myBucket/myKey')
-              var req = http.get(process.env.PROXY_URL + '/incoming/' + tweet.id)
+              var req_url = process.env.PROXY_URL + '/incoming/' + tweet.id
+              console.log('gonna make a request to: ' + req_url)
+              var req = http.get(req_url)
               req.on('error', function (e) {
                 console.log('problem with request: ' + e.message)
               })
