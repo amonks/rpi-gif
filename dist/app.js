@@ -25,7 +25,7 @@ function video_opts() {
   }
   var defaults = {
     mode: 'video',
-    output: '/data/' + 'vid' + '.264',
+    output: '../../data/' + 'vid' + '.264',
     width: process.env.VIDEO_WIDTH || 960,
     height: process.env.VIDEO_HEIGHT || 540,
     framerate: process.env.VIDEO_FRAMERATE || 15,
