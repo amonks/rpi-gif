@@ -13,7 +13,7 @@ app.get('/capture', function (req, res) {
 })
 
 app.get('/latest', function (req, res) {
-  req.redirect('/videos/video.h264')
+  res.redirect('/videos/video.h264')
 })
 
 var camera = new RaspiCam({
