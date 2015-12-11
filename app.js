@@ -1,12 +1,19 @@
 // rpi-gif
 
 var RaspiCam = require('raspicam')
-var app = require('express')()
+var express = require('express')
+var app = express()
+
+app.use('/videos', express.static('/data'))
 
 app.get('/capture', function (req, res) {
   res.send('capturing')
   camera.start()
   console.log('capturing')
+})
+
+app.get('/latest', function (req, res) {
+  req.redirect('/videos/video.h264')
 })
 
 var camera = new RaspiCam({
