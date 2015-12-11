@@ -15,7 +15,6 @@
   },
   "scripts": {
     "preinstall": "bash deps.sh",
-    "start": "modprobe bcm2835-v4l2 && iojs dist/app.js"
+    "start": "modprobe bcm2835-v4l2 && node dist/app.js"
   },
-  "engine": "iojs"
 }
