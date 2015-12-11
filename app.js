@@ -7,9 +7,9 @@ var app = express()
 app.use('/videos', express.static('/data'))
 
 app.get('/capture', function (req, res) {
-  res.send('capturing')
   camera.start()
   console.log('capturing')
+  res.send('capturing')
 })
 
 app.get('/latest', function (req, res) {
@@ -18,7 +18,7 @@ app.get('/latest', function (req, res) {
 
 var camera = new RaspiCam({
   mode: 'video',
-  output: '../data/video.h264',
+  output: '/data/video.h264',
   framerate: process.env.VIDEO_FRAMERATE || 15,
   timeout: process.env.VIDEO_LENGTH || 3000
 })
