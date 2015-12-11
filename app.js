@@ -3,8 +3,9 @@
 var RaspiCam = require('raspicam')
 var express = require('express')
 
-var app = express.createServer()
-var io = require('socket.io')(app)
+var app = express()
+var server = require('http').Server(app)
+var io = require('socket.io')(server)
 
 var latest = 0
 
@@ -68,7 +69,7 @@ var video_opts = function (opts) {
   return opts
 }
 
-var server = app.listen(3000, function () {
+server.listen(3000, function () {
   var host = server.address().address
   var port = server.address().port
 
