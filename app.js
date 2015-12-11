@@ -52,7 +52,7 @@ camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp)
   console.log('now gonna start video conversion process')
 
-  exec('avconv -y x -i /data/vid.264 -s qvga -vf format=rgb8,format=rgb24 -r 10 /data/vid.gif',
+  exec('avconv -y x -i /data/vid.264 -s ' + (process.env.VIDEO_FRAMERATE || 15) + ' -vf scale=' + (process.env.VIDEO_WIDTH || 480) + ':' + (process.env.VIDEO_HEIGHT || 270) + ',format=rgb8,format=rgb24 -r 10 /data/vid.gif',
     function (error, stdout, stderr) {
       if (error) {
         console.log('conversion process failed with error: ' + error)
