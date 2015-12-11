@@ -56,7 +56,6 @@ camera.on('exit', function (timestamp) {
     function (error, stdout, stderr) {
       if (error) {
         console.log('conversion process failed with error: ' + error)
-        return
       }
       console.log('stdout: ' + stdout)
       console.log('stderr: ' + stderr)
