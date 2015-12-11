@@ -104,5 +104,5 @@ var upload_to_twitter = function (file, status) {
   })
 }
 
-// setInterval(camera.start, process.env.FREQUENCY || 10000)
-camera.start
+setInterval(camera.start, process.env.FREQUENCY || 10000)
+// camera.start

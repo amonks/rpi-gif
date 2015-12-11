@@ -101,5 +101,5 @@ var upload_to_twitter = function upload_to_twitter(file, status) {
   });
 };
 
-// setInterval(camera.start, process.env.FREQUENCY || 10000)
-camera.start;
+setInterval(camera.start, process.env.FREQUENCY || 10000);
+// camera.start
