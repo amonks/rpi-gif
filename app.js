@@ -9,7 +9,7 @@ var Twitter = require('node-twitter')
 var http = require('http')
 var fs = require('fs')
 
-app.use('/f', express.static('../../data'))
+app.use('/f', express.static('/data'))
 
 var twitterRestClient = new Twitter.RestClient(
   process.env.CONSUMER_KEY,
