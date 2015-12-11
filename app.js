@@ -113,7 +113,7 @@ var upload_to_twitter = function (file, status) {
 }
 
 console.log('about to start camera interval')
-if (process.env.RECORD !== 'FALSE') {
+if (process.env.RECORD && process.env.RECORD !== 'FALSE') {
   setInterval(function () {
     camera.start()
   }, process.env.VIDEO_PERIOD || 10000)
