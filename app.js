@@ -56,7 +56,7 @@ camera.on('exit', function (timestamp) {
   console.log('video child process has exited at ' + timestamp)
   console.log('now gonna start video conversion process')
 
-  var command = 'avconv -r 30 -i /data/vid.264 -vcodec copy /data/vid.mp4 && avconv -y -i /data/vid.mp4 -s ' + (process.env.VIDEO_FRAMERATE || 15) + ' -vf scale=' + (process.env.VIDEO_WIDTH || 480) + ':' + (process.env.VIDEO_HEIGHT || 270) + ',format=rgb8,format=rgb24 -r 10 /data/vid.gif'
+  var command = 'avconv -y -r 30 -i /data/vid.264 -vcodec copy /data/vid.mp4 && avconv -y -i /data/vid.mp4 -s ' + (process.env.VIDEO_FRAMERATE || 15) + ' -vf scale=' + (process.env.VIDEO_WIDTH || 480) + ':' + (process.env.VIDEO_HEIGHT || 270) + ',format=rgb8,format=rgb24 -r 10 /data/vid.gif'
   console.log(command)
   exec(command,
     function (error, stdout, stderr) {
@@ -113,9 +113,11 @@ var upload_to_twitter = function (file, status) {
 }
 
 console.log('about to start camera interval')
-setInterval(function () {
-  camera.start()
-}, process.env.VIDEO_PERIOD || 10000)
+if (process.env.RECORD !== 'FALSE') {
+  setInterval(function () {
+    camera.start()
+  }, process.env.VIDEO_PERIOD || 10000)
+}
 
 var server = app.listen(3000, function () {
   console.log('listening on 3000')
