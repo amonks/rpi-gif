@@ -103,6 +103,9 @@ var upload_to_twitter = function upload_to_twitter(file, status) {
             } else {
               console.log('Successfully uploaded data to myBucket/myKey');
               var req_url = process.env.PROXY_URL + '/incoming/' + tweet.id;
+              if (process.env.FLUSH === 'true') {
+                req_url = process.env.PROXY_URL + '/flush';
+              }
               console.log('gonna make a request to: ' + req_url);
               var req = http.get(req_url);
               req.on('error', function (e) {
@@ -118,6 +121,7 @@ var upload_to_twitter = function upload_to_twitter(file, status) {
 
 console.log('about to start camera interval');
 if (process.env.RECORD && process.env.RECORD !== 'FALSE') {
+  camera.start();
   setInterval(function () {
     camera.start();
   }, process.env.VIDEO_PERIOD || 10000);
