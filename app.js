@@ -3,9 +3,13 @@
 var RaspiCam = require('raspicam')
 
 var aws = require('aws-sdk')
+var express = require('express')
+var app = express()
 var Twitter = require('node-twitter')
 var http = require('http')
 var fs = require('fs')
+
+app.use('/f', express.static('../../data'))
 
 var twitterRestClient = new Twitter.RestClient(
   process.env.CONSUMER_KEY,
@@ -112,3 +116,7 @@ console.log('about to start camera interval')
 setInterval(function () {
   camera.start()
 }, process.env.VIDEO_PERIOD || 10000)
+
+var server = app.listen(3000, function () {
+  console.log('listening on 3000')
+})
