@@ -36,9 +36,9 @@ function video_opts (opts = {}) {
     framerate: process.env.VIDEO_FRAMERATE || 5,
     timeout: process.env.VIDEO_LENGTH || 5000
   }
-  // Object.assign(opts, flips)
-  // Object.assign(opts, defaults)
-  return defaults
+  Object.assign(opts, flips)
+  Object.assign(opts, defaults)
+  return opts
 }
 
 var camera = new RaspiCam(video_opts())
